@@ -1,6 +1,5 @@
 package org.fhi360.ddd.domain;
 
-
 import lombok.Data;
 import org.hibernate.annotations.ResultCheckStyle;
 import org.hibernate.annotations.SQLDelete;
@@ -55,4 +54,6 @@ public class CommunityPharmacy implements Serializable {
     public void preUpdate() {
         lastModified = LocalDateTime.now();
     }
+
 }
+

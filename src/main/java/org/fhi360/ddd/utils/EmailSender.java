@@ -18,15 +18,28 @@ import java.io.UnsupportedEncodingException;
 public class EmailSender {
     private final JavaMailSender mailSender;
 
+   // @PostConstruct
+    public void email() {
+        try {
+            sendMail("aejakhegbe@fhi360.org", "DDD Activation", "Looking Good");
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void sendMail(String to, String subject, String body) throws MessagingException, UnsupportedEncodingException {
 
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        message.setFrom(new InternetAddress("zitnaija@gmail.com", "DDD"));
+        message.setFrom(new InternetAddress("info@agromatrix.com.ng", "DDD"));
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
         message.setSubject(subject);
         message.setContent(body, "text/html");
         mailSender.send(message);
+        System.out.println("done");
+
 
     }
 
@@ -34,7 +47,7 @@ public class EmailSender {
         String header = "Decentralized Drugs Distribution (DDD) App";
         String name = "Dear " + username;
         String please = "Your DDD Activation code is";
-        String copy = code + "  and your username is  " + name1 +" ," +
+        String copy = code + "  and your username is  " + name1 + " ," +
             " Kindly use the username for Login after resetting your password using the activation code. ";
         String body2 = "<html>" + "<head>" + "</title>"
             + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">" + "</title>" + "</head>"
@@ -52,8 +65,5 @@ public class EmailSender {
         return body2;
     }
 
-//    @PostConstruct
-//    public void init() throws MessagingException, UnsupportedEncodingException {
-//        sendMail("eadrisoyibo@gmail.com", "Test DDD message", activation("oyisco","123"));
-//    }
+
 }

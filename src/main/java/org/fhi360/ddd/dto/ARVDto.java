@@ -1,15 +1,11 @@
 package org.fhi360.ddd.dto;
 
-import liquibase.exception.DatabaseException;
 import lombok.Data;
 import org.fhi360.ddd.domain.Patient;
-
-import java.time.LocalDate;
-import java.util.Date;
-
 @Data
 public class ARVDto {
     private Long id;
+    private Long patientId;
     private Patient patient;
     private Long facilityId;
     private String dateVisit;

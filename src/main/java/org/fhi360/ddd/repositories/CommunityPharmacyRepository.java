@@ -1,13 +1,16 @@
 package org.fhi360.ddd.repositories;
 
-import org.fhi360.ddd.domain.CommunityPharmacy;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-
+import java.util.List;
 import java.util.Optional;
+import org.fhi360.ddd.domain.CommunityPharmacy;
+import org.fhi360.ddd.domain.Facility;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CommunityPharmacyRepository extends JpaRepository<CommunityPharmacy, Long> {
-    Optional<CommunityPharmacy> findByPinIgnoreCase(String pin);
-    Optional<CommunityPharmacy> findByEmail(String email);
+  Optional<CommunityPharmacy> findByPinIgnoreCase(String paramString);
 
+  Optional<CommunityPharmacy> findByEmail(String paramString);
+
+  List<CommunityPharmacy> findByFacility(Facility paramFacility);
 }
+

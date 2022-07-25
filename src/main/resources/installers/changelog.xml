@@ -144,24 +144,22 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="address" type="varchar(128)"/>
-            <column name="phone" type="varchar(32)"/>
-            <column name="type" type="varchar(32)"/>
+            <column name="address" type="varchar(350)"/>
+            <column name="phone" type="varchar(350)"/>
+            <column name="type" type="varchar(350)"/>
 
+            <column name="username" type="varchar(350)"/>
 
-            <column name="username" type="varchar(200)"/>
+            <column name="email" type="varchar(350)"/>
 
-            <column name="email" type="varchar(32)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="pin" type="varchar(16)">
+            <column name="pin" type="varchar(350)">
                 <constraints nullable="false"/>
             </column>
             <column name="archived" type="boolean" defaultValue="false">
                 <constraints nullable="false"/>
             </column>
-            <column name="uuid" type="varchar(36)" defaultValue="(uuid_generate_v4())::text">
-                <constraints unique="true" nullable="false"/>
+            <column name="uuid" type="varchar(36)" defaultValueComputed="uuid_generate_v4()::text">
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="last_modified" type="timestamp" defaultValueComputed="now()">
                 <constraints nullable="false"/>
@@ -170,6 +168,8 @@
         <addForeignKeyConstraint baseTableName="community_pharmacy" baseColumnNames="facility_id"
                                  constraintName="fk_community_pharmacy_facility_id"
                                  referencedTableName="facility" referencedColumnNames="id"/>
+
+        <loadData tableName="community_pharmacy" separator="," file="installers/pharmacy.csv"/>
 
     </changeSet>
 
@@ -234,8 +234,8 @@
             <column name="archived" type="boolean" defaultValue="false">
                 <constraints nullable="false"/>
             </column>
-            <column name="uuid" type="varchar(36)" defaultValue="(uuid_generate_v4())::text">
-                <constraints unique="true" nullable="false"/>
+            <column name="uuid" type="varchar(36)" defaultValueComputed="uuid_generate_v4()::text">
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="last_modified" type="timestamp" defaultValueComputed="now()">
                 <constraints nullable="false"/>
@@ -249,6 +249,8 @@
         <addForeignKeyConstraint baseTableName="patient" baseColumnNames="community_pharmacy_id"
                                  constraintName="fk_patient_community_pharmacy_id"
                                  referencedTableName="community_pharmacy" referencedColumnNames="id"/>
+
+
     </changeSet>
 
     <changeSet author="idris" id="20210402162934-07">
@@ -340,8 +342,8 @@
             <column name="archived" type="boolean" defaultValue="false">
                 <constraints nullable="false"/>
             </column>
-            <column name="uuid" type="varchar(36)" defaultValue="(uuid_generate_v4())::text">
-                <constraints unique="true" nullable="false"/>
+            <column name="uuid" type="varchar(36)" defaultValueComputed="uuid_generate_v4()::text">
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="last_modified" type="timestamp" defaultValueComputed="now()">
                 <constraints nullable="false"/>
@@ -405,7 +407,6 @@
             </column>
         </createTable>
 
-
         <addForeignKeyConstraint baseTableName="users" baseColumnNames="facility_id"
                                  constraintName="fk_users_facility_id"
                                  referencedTableName="facility" referencedColumnNames="id"/>
@@ -414,5 +415,101 @@
 
     </changeSet>
 
+
+    <changeSet author="idris" id="20210402162934-19">
+        <createTable tableName="inventory">
+            <column name="id" type="serial" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="inventory_pkey"/>
+            </column>
+
+            <column name="batch_number" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expire_date" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="DOUBLE(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="archived" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="regimen_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="community_pharmacy_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="inventory" baseColumnNames="regimen_id"
+                                 constraintName="fk_inventory_regimen_id"
+                                 referencedTableName="regimen" referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="inventory" baseColumnNames="community_pharmacy_id"
+                                 constraintName="fk_inventory_community_pharmacy_id"
+                                 referencedTableName="community_pharmacy" referencedColumnNames="id"/>
+    </changeSet>
+
+
+    <changeSet author="idris" id="20210402162934-20">
+        <createTable tableName="drug">
+            <column name="id" type="serial" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="drug_pkey"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="basic_unit" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="archived" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="regimen_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="drug" baseColumnNames="regimen_id"
+                                 constraintName="fk_drug_regimen_id"
+                                 referencedTableName="regimen" referencedColumnNames="id"/>
+    </changeSet>
+
+<!--    <changeSet author="idris" id="changeDataType">-->
+<!--        <modifyDataType-->
+<!--            columnName="date_started"-->
+<!--            newDataType="date"-->
+<!--            tableName="patient"/>-->
+
+<!--        <modifyDataType-->
+<!--            columnName="date_last_viral_load"-->
+<!--            newDataType="date"-->
+<!--            tableName="patient"/>-->
+
+<!--        <modifyDataType-->
+<!--            columnName="viral_load_due_date"-->
+<!--            newDataType="date"-->
+<!--            tableName="patient"/>-->
+
+<!--        <modifyDataType-->
+<!--            columnName="date_last_refill"-->
+<!--            newDataType="date"-->
+<!--            tableName="patient"/>-->
+
+<!--        <modifyDataType-->
+<!--            columnName="date_next_refill"-->
+<!--            newDataType="date"-->
+<!--            tableName="patient"/>-->
+
+<!--        <modifyDataType-->
+<!--            columnName="date_last_clinic"-->
+<!--            newDataType="date"-->
+<!--            tableName="patient"/>-->
+
+<!--        <modifyDataType-->
+<!--            columnName="date_next_clinic"-->
+<!--            newDataType="date"-->
+<!--            tableName="patient"/>-->
+<!--    </changeSet>-->
 
 </databaseChangeLog>

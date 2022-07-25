@@ -1,3 +1,4 @@
+
 package org.fhi360.ddd.dto;
 
 import lombok.Data;
@@ -10,5 +11,6 @@ public class UserDto {
     private String role;
     private String facilityName;
     private Long facilityId;
+
 
 }

@@ -5,9 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface DeviceConfigRepository extends JpaRepository<DeviceConfig, Long> {
-    DeviceConfig findByDeviceId(String deviceConfig);
+  DeviceConfig findByDeviceId(String paramString);
 
-    @Query(value = "SELECT count(*) FROM deviceconfig", nativeQuery = true)
-    int masDeviceConfigId();
-
+  @Query(value = "SELECT count(*) FROM deviceconfig", nativeQuery = true)
+  int masDeviceConfigId();
 }

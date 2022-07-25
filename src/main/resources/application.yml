@@ -1,28 +1,24 @@
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost/ddd?autoReconnect=true
+    url: jdbc:postgresql://localhost/ddd_liberia?autoReconnect=true
     username: postgres
-    password: lamis
+    password: Str0ngAdmInP@ssw0rd
+  #   Str0ngAdmInP@ssw0rd  ddd_liberia
   jpa:
     hibernate:
       use-new-id-generator-mappings: false
   liquibase:
     change-log: classpath:/installers/changelog.xml
   mail:
-    host: smtp.gmail.com
+    host: smtp.mailgun.org
     port: 587
-    username: dddapp.lib@gmail.com
-    password: "dddapp1@"
+    username: postmaster@agromatrix.com.ng
+    password: "1a5e42f85bc7dfedd4959f1c4b3524aa"
     properties:
       mail.smtp.starttls.enable: true
       mail.smtp.starttls.required: true
       mail.smtp.auth: true
-
-logging:
-  file:
-    name: app.log
-
-
-
+      jpa:
+        database-platform: org.hibernate.dialect.MySQL5Dialect
 

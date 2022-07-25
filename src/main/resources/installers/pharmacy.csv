@@ -1,3 +1,14 @@
-id,name,facility_id,address,phone,email,pin
-1;Christa Pharmacy;Banjor, Hotel Africa;776550094;spdarciba@gmail.com;LI0001
-
+﻿id,name,facility_id,address,phone,email,pin
+1,Christa Pharmacy,1523,Banjor Hotel Africa,776550094,spdarciba@gmail.com,LI0001
+2,Loyalty Pharmacy,1523,St paul Bridge after Island clinic Junction,770966807,amestfarley121991@gmail.com,LI0002
+3,Redemption Pharmacy,1523,Tweh Farm,778561255,90000,LI0003
+4,Kingdom Pharmacy,1523,Caldwell Junction opposite IB,881323908,Kingdompharmaceuticalsliberia@gmail.com,LI0004
+5,God s Divine Pharmacy,1523,Upper Caldwell before the Police station,778353157,nathanielnabieu@gmail.com,LI0005
+6,Marvelous Pharmacy,1523,Upper Caldwell before the Police station,778383717,creationmarvelous87@gmail.com,LI0006
+7,Success B. C Pharmacy,1523,Clara Town Gas Station with in the Auto pack ,778829217,anomweenwabuoke@gmail.com,LI0007
+8,God s Lead Pharmacy,1523,Clara Town  Store using the store road,770638266,9999,LI0008
+9,Sia Kripa Pharmacy,1523,New Georgia Junction adjecent Green Flower Intertainment,775198756,UNIQUEPARASRAM.KPM@GMAIL.COM,LI0009
+10,Delight Pharmacy,1523,JJY Gardnersville  Adjecent the LBDI Bank,776974327,dwahne645@gmail.com,LI0010
+11,United Waum Pharmacy,1523,Stephen Tolbert Estate Junction,886947209,powoeelimelechi@gmail.com,LI0011
+12,Van Pharmacy,1523,Barnersville Kebah Township opposite the Barnersville Health Center,770162881,888888,LI0012
+13,Mayoubah & Sons Pharmacy,1523,Gardnersville Town Hall Junction,777220074,layeea.donzo@gmail.com,LI0013

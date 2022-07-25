@@ -7,18 +7,17 @@ import org.springframework.data.domain.Persistable;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
 @Data
+@Entity
 @EqualsAndHashCode(of = "id")
 public class Country implements Serializable, Persistable<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-
-    @Column(unique = true)
+    @Column(unique = true, name = "name")
     private String name;
-
-    @Column(unique = true)
+    @Column(unique = true, name = "code")
     private String code;
 
     @Override

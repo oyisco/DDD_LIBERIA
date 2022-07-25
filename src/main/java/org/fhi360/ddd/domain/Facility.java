@@ -50,4 +50,5 @@ public class Facility implements Serializable, Persistable<Long> {
     public boolean isNew() {
         return id == null;
     }
+
 }
