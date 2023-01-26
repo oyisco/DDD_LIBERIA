@@ -8,4 +8,5 @@ public class FacilityDto {
     private String name;
     private Long stateId;
     private Long districtId;
+
 }

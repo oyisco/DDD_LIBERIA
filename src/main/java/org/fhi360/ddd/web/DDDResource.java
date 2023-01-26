@@ -39,6 +39,34 @@ public class DDDResource {
     private final DrugRepository drugRepository;
     DateTimeFormatter df = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
+    @PostMapping("save-facility")
+    public Facility saveFac(@RequestBody FacilityRequest facilityRequest) {
+
+        System.out.println("SUCCESS FACILITY");
+        Facility facility = new Facility();
+        System.out.println("SUCCESS FACILITY");
+        // facility.setId(id);
+        System.out.println("SUCCESS FACILITY 2");
+        facility.setName(facilityRequest.getName());
+        System.out.println("SUCCESS FACILITY 3");
+        State state1 = new State();
+        System.out.println("SUCCESS FACILITY 5");
+        state1.setId(facilityRequest.getStateId());
+        System.out.println("SUCCESS FACILITY 4");
+        facility.setState(state1);
+        System.out.println("SUCCESS FACILITY 6");
+        District district1 = new District();
+        System.out.println("SUCCESS FACILITY 7");
+        district1.setId(facilityRequest.getLgaId());
+        System.out.println("SUCCESS FACILITY 8");
+        facility.setDistrict(district1);
+        System.out.println("SUCCESS FACILITY 9");
+        return facilityRepository.save(facility);
+        //  System.out.println("SUCCESS FACILITY");
+
+    }
+
+
     @PostMapping("mobile/pharmacy")
     private ResponseEntity<Response> saveOrUpdatePharmacy(@RequestBody CommunityPharmacy pharmacy) {
         Response response = new Response();
@@ -54,7 +82,7 @@ public class DDDResource {
             pharmacy.setPin(activationCode);
             CommunityPharmacy communityPharmacy = this.communityPharmacyRepository.save(pharmacy);
             //  String message = this.emailSender.activation(communityPharmacy.getName(), communityPharmacy.getUsername(), activationCode);
-            //this.emailSender.sendMail(communityPharmacy.getEmail(), "DDD Activation", message);
+            // this.emailSender.sendMail(communityPharmacy.getEmail(), "DDD Activation", message);
             response.setPharmacy(communityPharmacy);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -123,7 +151,6 @@ public class DDDResource {
         String dateNextRefill1 = patient2.getDateNextRefill();
         patient.setDateNextRefill(LocalDate.parse(dateNextRefill1, df));
         Patient patient3 = this.patientRepository.save(patient);
-
 
         PatientDto patient12 = new PatientDto();
         patient12.setId(patient3.getId());
@@ -247,9 +274,9 @@ public class DDDResource {
                 ARV arv = checkIfExist.get();
                 arv.setPatient(patient);
                 arv.setFacility(facility);
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-                arv.setDateVisit(LocalDate.parse(arvs.getDateVisit(), formatter));
-                arv.setDateNextRefill(LocalDate.parse(arvs.getDateNextRefill(), formatter));
+                //  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                arv.setDateVisit(LocalDate.parse(arvs.getDateVisit(), df));
+                arv.setDateNextRefill(LocalDate.parse(arvs.getDateNextRefill(), df));
                 arv.setBodyWeight(arvs.getBodyWeight());
                 arv.setHeight(arvs.getHeight());
                 arv.setBp(arvs.getBp());
@@ -355,9 +382,10 @@ public class DDDResource {
                 arv.setUuid(arvs.getUuid());
                 arv.setPatient(patient);
                 arv.setFacility(facility);
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-                arv.setDateVisit(LocalDate.parse(arvs.getDateVisit(), formatter));
-                arv.setDateNextRefill(LocalDate.parse(arvs.getDateNextRefill(), formatter));
+
+                //  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                arv.setDateVisit(LocalDate.parse(arvs.getDateVisit(), df));
+                arv.setDateNextRefill(LocalDate.parse(arvs.getDateNextRefill(), df));
                 arv.setBodyWeight(arvs.getBodyWeight());
                 arv.setHeight(arvs.getHeight());
                 arv.setBp(arvs.getBp());
@@ -470,13 +498,15 @@ public class DDDResource {
     private ResponseEntity<Response> saveARYV(@RequestBody ARVDto arvs) {
         Response response = new Response();
         ARV arv = new ARV();
+        System.out.println("patient id " + arvs.getPatient().getId());
         Patient patient = this.patientRepository.getOne(arvs.getPatient().getId());
         arv.setPatient(patient);
+        System.out.println("facility id " + arvs.getFacilityId());
         Facility facility = this.facilityRepository.getOne(arvs.getFacilityId());
         arv.setFacility(facility);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        arv.setDateVisit(LocalDate.parse(arvs.getDateVisit(), formatter));
-        arv.setDateNextRefill(LocalDate.parse(arvs.getDateNextRefill(), formatter));
+        //   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        arv.setDateVisit(LocalDate.parse(arvs.getDateVisit(), df));
+        arv.setDateNextRefill(LocalDate.parse(arvs.getDateNextRefill(), df));
         arv.setBodyWeight(arvs.getBodyWeight());
         arv.setHeight(arvs.getHeight());
         arv.setBp(arvs.getBp());
@@ -528,6 +558,7 @@ public class DDDResource {
         } else {
             arv.setIptEligible(Boolean.FALSE);
         }
+        System.out.println("regiment id " + arvs.getRegimen1());
         Regimen regimen1 = this.regimenRepository.getOne(arvs.getRegimen1());
         arv.setRegimen1(regimen1);
         arv.setDuration1(arvs.getDuration1());
@@ -536,7 +567,7 @@ public class DDDResource {
         }
 
         arv.setQuantityPrescribed1(Double.valueOf(arvs.getPrescribed1()));
-        Regimen regimen2 = this.regimenRepository.getOne(arvs.getRegimen2());
+        Regimen regimen2 = this.regimenRepository.getOne(1L);
         arv.setRegimen2(regimen2);
         arv.setDuration2(arvs.getDuration2());
         if (!StringUtils.isBlank(arvs.getPrescribed2()) || !StringUtils.isBlank(arvs.getPrescribed2())) {
@@ -545,7 +576,7 @@ public class DDDResource {
         if (!StringUtils.isBlank(arvs.getDispensed2())) {
             arv.setQuantityDispensed2(Double.valueOf(arvs.getDispensed2()));
         }
-        Regimen regimen3 = this.regimenRepository.getOne(arvs.getRegimen3());
+        Regimen regimen3 = this.regimenRepository.getOne(1L);
         arv.setRegimen3(regimen3);
         arv.setDuration3(arvs.getDuration3());
         if (!StringUtils.isBlank(arvs.getPrescribed3()) || !StringUtils.isBlank(arvs.getPrescribed3())) {
@@ -556,6 +587,10 @@ public class DDDResource {
         }
         if (!StringUtils.isBlank(arvs.getRegimen4())) {
             Regimen regimen4 = this.regimenRepository.getOne(Long.valueOf(arvs.getRegimen4()));
+            arv.setRegimen4(regimen4);
+            arv.setDuration4(arvs.getDuration4());
+        } else {
+            Regimen regimen4 = this.regimenRepository.getOne(1L);
             arv.setRegimen4(regimen4);
             arv.setDuration4(arvs.getDuration4());
         }
@@ -581,7 +616,7 @@ public class DDDResource {
         /* 492 */
         arv.setAdverseReport(arvs.getAdverseReport());
         /* 493 */
-        arv.setDateNextClinic(LocalDate.parse(arvs.getDateNextClinic(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        arv.setDateNextClinic(LocalDate.parse(arvs.getDateNextClinic(),df));
         /* 494 */
         arv.setViralLoadDueDate(arvs.getViralLoadDeuDate());
         /* 495 */
@@ -611,7 +646,9 @@ public class DDDResource {
 
 
     @GetMapping("mobile/patient/{deviceId}/{pin}/{accountUserName}/{accountPassword}")
-    private ResponseEntity<Map<String, Object>> activateOutLet(@PathVariable("deviceId") String deviceId, @PathVariable("pin") String pin, @PathVariable("accountUserName") String accountUserName, @PathVariable("accountPassword") String accountPassword) {
+    private ResponseEntity<Map<String, Object>> activateOutLet(@PathVariable("deviceId") String deviceId, @PathVariable("pin") String pin,
+                                                               @PathVariable("accountUserName") String accountUserName
+        , @PathVariable("accountPassword") String accountPassword) {
 
         CommunityPharmacy communityPharmacy = null;
         try {
@@ -664,19 +701,94 @@ public class DDDResource {
 
         List<RegimenDto> regimenList = new ArrayList<>();
         List<Inventory> regimenList1 = this.inventoryRepository.findByCommunityPharmacy(communityPharmacy);
-        regimenList1.forEach(inventory -> {
+        if (!regimenList1.isEmpty()) {
+            regimenList1.forEach(inventory -> {
+                RegimenDto regimen = new RegimenDto();
+                regimen.setId(inventory.getRegimen().getId());
+                regimen.setRegimenTypeId(inventory.getRegimen().getRegimenTypeId());
+                regimen.setName(inventory.getRegimen().getName());
+                regimen.setBatchNumber(inventory.getBatchNumber());
+                regimen.setQuantity(inventory.getQuantity());
+                regimen.setExpireDate(inventory.getExpireDate());
+                regimenList.add(regimen);
+            });
+        } else {
+            Regimen regimenList2 = this.regimenRepository.findByName("TDF 300mg +3TC 300mg +DTG 50mg");
             RegimenDto regimen = new RegimenDto();
-            regimen.setId(inventory.getRegimen().getId());
-            regimen.setRegimenTypeId(inventory.getRegimen().getRegimenTypeId());
-            regimen.setName(inventory.getRegimen().getName());
-            regimen.setBatchNumber(inventory.getBatchNumber());
-            regimen.setQuantity(inventory.getQuantity());
-            regimen.setExpireDate(inventory.getExpireDate());
+            regimenList2.setId(regimenList2.getId());
+            regimenList2.setRegimenTypeId(regimenList2.getRegimenTypeId());
+            regimenList2.setName(regimenList2.getName());
             regimenList.add(regimen);
-        });
+//            regimenList2.setBatchNumber(inventory.getBatchNumber());
+//            regimenList2.setQuantity(inventory.getQuantity());
+//            regimenList2.setExpireDate(inventory.getExpireDate());
+        }
         Map<String, Object> obj = new HashMap<>();
         obj.put("facility", facility);
         obj.put("regimens", regimenList);
+        obj.put("patients", patientList);
+        return ResponseEntity.ok(obj);
+    }
+
+
+    @GetMapping("mobile/patient/{pin}")
+    private ResponseEntity<Map<String, Object>> reloadPatient(@PathVariable("pin") String pin) {
+
+        CommunityPharmacy communityPharmacy = null;
+        try {
+
+            communityPharmacy = this.communityPharmacyRepository.findByPinIgnoreCase(pin).orElseThrow(() -> new ResourceException("Activation pin does not  exist:   " + pin));
+
+        } catch (ResourceException resourceException) {
+
+            resourceException.printStackTrace();
+        }
+        // Facility facility = this.facilityRepository.getOne(Objects.<Long>requireNonNull(Objects.requireNonNull(communityPharmacy).getFacility().getId()));
+
+        List<PatientDto> patientList = new ArrayList<>();
+        List<Patient> patients = this.patientRepository.findByCommunityPharmacyAndArchived(communityPharmacy, Boolean.FALSE);
+        patients.forEach(patient -> {
+            PatientDto patient1 = new PatientDto();
+            patient1.setId(patient.getId());
+            patient1.setHospitalNum(patient.getHospitalNum());
+            patient1.setFacility(patient.getFacility());
+            patient1.setUniqueId(patient.getUniqueId());
+            patient1.setSurname(patient.getSurname());
+            patient1.setOtherNames(patient.getOtherNames());
+            patient1.setGender(patient.getGender());
+            String dob = patient.getDateBirth().format(df);
+            patient1.setDateBirth(dob);
+            patient1.setAddress(patient.getAddress());
+            patient1.setPhone(patient.getPhone());
+            patient1.setDateStarted(patient.getDateStarted().format(df));
+            patient1.setLastClinicStage(patient.getLastClinicStage());
+            patient1.setLastViralLoad(patient.getLastViralLoad());
+            patient1.setDateLastViralLoad(patient.getDateLastViralLoad().format(df));
+            patient1.setViralLoadDueDate(patient.getViralLoadDueDate().format(df));
+            patient1.setViralLoadType(patient.getViralLoadType());
+            patient1.setDateLastClinic(patient.getDateLastClinic().format(df));
+            patient1.setDateNextClinic(patient.getDateNextClinic().format(df));
+            patient1.setDateLastRefill(patient.getDateLastRefill().format(df));
+            patient1.setDateNextRefill(patient.getDateNextRefill().format(df));
+            patient1.setPharmacyId(patient.getCommunityPharmacy().getId());
+            patientList.add(patient1);
+        });
+//
+//        List<RegimenDto> regimenList = new ArrayList<>();
+//        List<Inventory> regimenList1 = this.inventoryRepository.findByCommunityPharmacy(communityPharmacy);
+//        regimenList1.forEach(inventory -> {
+//            RegimenDto regimen = new RegimenDto();
+//            regimen.setId(inventory.getRegimen().getId());
+//            regimen.setRegimenTypeId(inventory.getRegimen().getRegimenTypeId());
+//            regimen.setName(inventory.getRegimen().getName());
+//            regimen.setBatchNumber(inventory.getBatchNumber());
+//            regimen.setQuantity(inventory.getQuantity());
+//            regimen.setExpireDate(inventory.getExpireDate());
+//            regimenList.add(regimen);
+//        });
+        Map<String, Object> obj = new HashMap<>();
+        //  obj.put("facility", facility);
+        // obj.put("regimens", regimenList);
         obj.put("patients", patientList);
         return ResponseEntity.ok(obj);
     }
@@ -703,7 +815,9 @@ public class DDDResource {
 
 
     @GetMapping("mobile/facility/{deviceId}/{accountUserName}/{accountPassword}")
-    private ResponseEntity<Map<String, Object>> activateFacility(@PathVariable("deviceId") String deviceId, @PathVariable("accountUserName") String accountUserName, @PathVariable("accountPassword") String accountPassword) {
+    private ResponseEntity<Map<String, Object>> activateFacility(@PathVariable("deviceId") String
+                                                                     deviceId, @PathVariable("accountUserName") String accountUserName, @PathVariable("accountPassword") String
+                                                                     accountPassword) {
 
         List<Facility> facility = this.facilityRepository.findAll();
         List<Regimen> regimenList = this.regimenRepository.findByNameOrderByIdDesc("TDF 300mg +3TC 300mg +DTG 50mg");
@@ -747,7 +861,8 @@ public class DDDResource {
     }
 
     @GetMapping("mobile/login/{username}/{password}/{role}")
-    private ResponseEntity<Response> login(@PathVariable String username, @PathVariable String password, @PathVariable String role) {
+    private ResponseEntity<Response> login(@PathVariable String username, @PathVariable String
+        password, @PathVariable String role) {
         Response response = new Response();
         Optional<User> user = this.userRepository.findByUsernameAndPasswordIgnoreCase(username, password);
         if (user.isPresent()) {
@@ -789,7 +904,8 @@ public class DDDResource {
     }
 
     @PostMapping("mobile/discontinue/{dateDiscontinue}/{reasonDiscontinued}/{id}")
-    public ResponseEntity<Response> discontinued(@PathVariable("dateDiscontinue") String dateDiscontinue, @PathVariable("reasonDiscontinued") String reasonDiscontinued, @PathVariable("id") Long id) {
+    public ResponseEntity<Response> discontinued(@PathVariable("dateDiscontinue") String
+                                                     dateDiscontinue, @PathVariable("reasonDiscontinued") String reasonDiscontinued, @PathVariable("id") Long id) {
         Response response = new Response();
         updatePatient(LocalDate.parse(dateDiscontinue, DateTimeFormatter.ofPattern("yyyy-MM-dd")), reasonDiscontinued, id);
         response.setMessage("Success");
@@ -801,6 +917,23 @@ public class DDDResource {
     public ResponseEntity<List<CommunityPharmacy>> getPharmacy(@PathVariable("facilityId") Long facilityId) {
         Facility facility = this.facilityRepository.findById(facilityId).get();
         List<CommunityPharmacy> communityPharmacies = this.communityPharmacyRepository.findByFacility(facility);
+        return ResponseEntity.ok(communityPharmacies);
+    }
+
+
+    @DeleteMapping("delete-facility/{facilityId}")
+    public void deleteFacility(@PathVariable Long facilityId) {
+        Optional<Facility> facility = this.facilityRepository.findById(facilityId);
+        if (facility.isPresent()) {
+            Facility facility1 = facility.get();
+            this.facilityRepository.delete(facility1);
+        }
+    }
+
+
+    @GetMapping("get-pharmacy")
+    public ResponseEntity<List<CommunityPharmacy>> getAllPharmacy() {
+        List<CommunityPharmacy> communityPharmacies = this.communityPharmacyRepository.findAll();
         return ResponseEntity.ok(communityPharmacies);
     }
 
@@ -944,13 +1077,15 @@ public class DDDResource {
     }
 
     @GetMapping("mobile-patient/update-date")
-    private void removePatientByUniqueIdAndFacility(@RequestParam(value = "dateNextRefill") String dateNextRefill, @RequestParam(value = "id") Long id) throws ResourceException {
+    private void removePatientByUniqueIdAndFacility(@RequestParam(value = "dateNextRefill") String
+                                                        dateNextRefill, @RequestParam(value = "id") Long id) throws ResourceException {
         Optional<Patient> patient = this.patientRepository.findById(id);
-        patient.map(patient1 -> {
+        if (patient.isPresent()) {
+            Patient patient1 = patient.get();
             patient1.setDateNextRefill(LocalDate.parse(dateNextRefill, df));
             this.patientRepository.save(patient1);
-            return ResponseEntity.ok();
-        }).orElseThrow(() -> new ResourceException("ID   does not  exist:   " + id + "   "));
+        }
+
     }
 
     @PostMapping("mobile/save/inventory")
@@ -1030,5 +1165,14 @@ public class DDDResource {
     public List<Regimen> getRegimenAll() {
         return this.regimenRepository.findAll();
     }
+
+    @GetMapping("mobile/regimen-all-updated")
+    public Regimen getRegimen() {
+        return this.regimenRepository.findByName("TDF 300mg +3TC 300mg +DTG 50mg");
+    }
 }
+
+
+
+
 

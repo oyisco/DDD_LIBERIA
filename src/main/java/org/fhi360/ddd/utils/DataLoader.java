@@ -26,31 +26,31 @@ public class DataLoader {
     private final PatientRepository patientRepository;
     private final JdbcTemplate jdbcTemplate;
 
-    public void saveFac(String name, Long stateId, Long lgaId) {
-
-        System.out.println("SUCCESS FACILITY");
-        Facility facility = new Facility();
-        System.out.println("SUCCESS FACILITY");
-        // facility.setId(id);
-        System.out.println("SUCCESS FACILITY 2");
-        facility.setName(name);
-        System.out.println("SUCCESS FACILITY 3");
-        State state1 = new State();
-        System.out.println("SUCCESS FACILITY 5");
-        state1.setId(stateId);
-        System.out.println("SUCCESS FACILITY 4");
-        facility.setState(state1);
-        System.out.println("SUCCESS FACILITY 6");
-        District district1 = new District();
-        System.out.println("SUCCESS FACILITY 7");
-        district1.setId(lgaId);
-        System.out.println("SUCCESS FACILITY 8");
-        facility.setDistrict(district1);
-        System.out.println("SUCCESS FACILITY 9");
-        facilityRepository.save(facility);
-        System.out.println("SUCCESS FACILITY");
-
-    }
+//    public void saveFac(String name, Long stateId, Long lgaId) {
+//
+//        System.out.println("SUCCESS FACILITY");
+//        Facility facility = new Facility();
+//        System.out.println("SUCCESS FACILITY");
+//        // facility.setId(id);
+//        System.out.println("SUCCESS FACILITY 2");
+//        facility.setName(name);
+//        System.out.println("SUCCESS FACILITY 3");
+//        State state1 = new State();
+//        System.out.println("SUCCESS FACILITY 5");
+//        state1.setId(stateId);
+//        System.out.println("SUCCESS FACILITY 4");
+//        facility.setState(state1);
+//        System.out.println("SUCCESS FACILITY 6");
+//        District district1 = new District();
+//        System.out.println("SUCCESS FACILITY 7");
+//        district1.setId(lgaId);
+//        System.out.println("SUCCESS FACILITY 8");
+//        facility.setDistrict(district1);
+//        System.out.println("SUCCESS FACILITY 9");
+//        facilityRepository.save(facility);
+//        System.out.println("SUCCESS FACILITY");
+//
+//    }
 
 //    @PostConstruct
 //    public void setDataStyl1() {
@@ -95,13 +95,10 @@ public class DataLoader {
 //    }
 
     public void saveRegimen() {
-        //  id,name,regimen_type_id
+        //id,name,regimen_type_id
         Regimen regimen = this.regimenRepository.findByName("TDF 300mg +3TC 300mg +DTG 50mg");
         if (regimen != null) {
-
         } else {
-
-
             jdbcTemplate.update("INSERT INTO regimen (id,name, regimen_type_id) VALUES (5000,'TDF 300mg +3TC 300mg +DTG 50mg', 1)");
 
         }
